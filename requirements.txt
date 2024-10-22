@@ -1,0 +1,5 @@
+pandas
+Flask==2.2.2
+SQLAlchemy==1.4.36
+qrcode>=8.0.0
+Flask-WTF==1.0.0
