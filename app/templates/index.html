@@ -1,0 +1,48 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <title>Indicadores Socioeconómicos</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Selecciona un Indicador y un Período</h1>
+        <form method="POST">
+            <label for="indicador">Indicador:</label>
+            <input type="text" id="indicador" name="indicador" required>
+            
+            <label for="periodo">Período:</label>
+            <input type="text" id="periodo" name="periodo" required>
+            
+            <button type="submit">Consultar</button>
+        </form>
+
+        {% if data %}
+        <h2>Resultados</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Campo 1</th>
+                    <th>Campo 2</th>
+                    <th>Campo 3</th>
+                    <!-- Agrega más encabezados según los campos de tu consulta -->
+                </tr>
+            </thead>
+            <tbody>
+                {% for row in data %}
+                <tr>
+                    <td>{{ row[0] }}</td>
+                    <td>{{ row[1] }}</td>
+                    <td>{{ row[2] }}</td>
+                    <!-- Agrega más celdas según los campos de tu consulta -->
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
+</body>
+</html>

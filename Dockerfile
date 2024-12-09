@@ -1,38 +1,24 @@
-# Use a slim Python image as the base
+# Usa una imagen base de Python
 FROM python:3.9-slim
 
-ENV DEBIAN_FRONTEND=noninteractive
-# Install necessary packages and clean up
+RUN apt-get update && apt-get install -y \
+    libmariadb-dev gcc && \
+    apt-get clean
 
-RUN apt-get update && \
-    apt-get install -y --no-install-recommends \
-    nginx \
-    libmariadb-dev \
-    libmariadb-dev-compat \
-    default-libmysqlclient-dev \
-    build-essential && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
-
-
-
-
-
-# Set the working directory
+# Instalar el paquete mariadb para Python
+RUN pip install mariadb
+# Establece el directorio de trabajo
 WORKDIR /app
 
-# Copy the requirements file and install dependencies
-COPY requirements.txt .
+# Copia los archivos de requisitos y los instala
+COPY app/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy the rest of the application code
-COPY . .
+# Copia el resto de la aplicación
+COPY app/ .
 
-# Copy the Nginx configuration file
-COPY nginx.conf /etc/nginx/sites-available/default
+# Expone el puerto 5000
+EXPOSE 5000
 
-# Expose port 80 for Nginx
-EXPOSE 80
-
-# Start Nginx and the Flask application
-CMD ["sh", "-c", "service nginx start && python app.py"]
+# Comando para ejecutar la aplicación
+CMD ["python", "app.py"]
